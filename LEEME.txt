@@ -1,0 +1,22 @@
+FOTOGRAFÍA PARA NO FOTÓGRAFOS - Prototipo web
+
+1. Descomprime la carpeta completa antes de abrir nada.
+2. Abre "index.html" con doble clic (Chrome, Edge o Firefox).
+3. Para poner tus fotos, guárdalas en la carpeta "fotos" con estos nombres
+   exactos, en minúsculas (.jpg, .jpeg, .png o .webp):
+
+   comunidad-1 ... comunidad-8   Fotos de otros usuarios (pantalla Comunidad)
+   galeria-1 ... galeria-4       Tus fotos (pantalla Mi galería)
+   banner                        Imagen horizontal del perfil
+   tutorial-1 ... tutorial-6     Miniaturas de los videos (salen a color)
+
+   Si falta un archivo, esa casilla no se muestra.
+   Las fotos .HEIC de iPhone no sirven: expórtalas como JPG.
+
+4. Los títulos e historias de Mi galería se cambian en la página con "Editar".
+   Los nombres de autores de Comunidad y los textos de Tutoriales se cambian
+   al inicio del código, en el bloque "CONFIGURACIÓN DE FOTOS" de index.html
+   (ábrelo con el Bloc de notas o con Visual Studio Code).
+
+5. "Restablecer la demostración" (pie de página o Ayuda y legal) devuelve
+   Mi galería a su estado inicial.

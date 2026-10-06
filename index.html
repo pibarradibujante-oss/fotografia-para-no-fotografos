@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fotografía para no fotógrafos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1A1A1A; --ink-2:#4D4D4D; --ink-3:#6E6E6E; --line:#9A9A9A;
+  --paper:#FFFFFF; --surface:#F2F2F2; --hair:#DEDEDE; --scrim:rgba(26,26,26,.72);
+  --title:"Poppins","Segoe UI",Helvetica,Arial,sans-serif;
+  --body:"Inter","Segoe UI",Helvetica,Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#FFFFFF; --ink-2:#CFCFCF; --ink-3:#9A9A9A; --line:#6E6E6E;
+    --paper:#1A1A1A; --surface:#262626; --hair:#3A3A3A; --scrim:rgba(0,0,0,.78);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#FFFFFF; --ink-2:#CFCFCF; --ink-3:#9A9A9A; --line:#6E6E6E;
+  --paper:#1A1A1A; --surface:#262626; --hair:#3A3A3A; --scrim:rgba(0,0,0,.78);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p{margin:0}
+h1{font:700 32px/1.15 var(--title);letter-spacing:-.01em}
+h2{font:600 20px/1.25 var(--title)}
+h3{font:600 16px/1.3 var(--title)}
+.muted{color:var(--ink-3);font-size:14px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+[hidden]{display:none!important}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);font:600 15px/1 var(--body)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);min-height:38px;padding:0 14px;font-weight:500;font-size:14px}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.small{min-height:32px;padding:0 12px;font-size:13px}
+.link{background:none;border:0;padding:4px 0;color:var(--ink-2);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--ink)}
+
+/* Login */
+#login{min-height:100%;display:grid;place-items:center;padding:32px 24px}
+.login-box{width:100%;max-width:360px;text-align:center;display:grid;gap:14px;justify-items:center}
+.login-box .mark{width:76px;height:76px;margin-bottom:10px}
+.login-box h1{font-size:30px}
+.login-box .btn{width:100%;margin-top:18px}
+.login-box .g{width:20px;height:20px;border-radius:50%;background:var(--paper);color:var(--ink);font:700 13px/20px var(--title);text-align:center}
+
+/* Estructura general */
+#app{min-height:100%;display:flex;flex-direction:column}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--hair)}
+.top-in{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font:600 15px/1.1 var(--title);background:none;border:0;padding:0;text-align:left}
+.brand svg{width:34px;height:34px;flex:none}
+.menu{display:none;gap:8px}
+.menu button,.tabs button{background:none;border:1.5px solid transparent}
+.menu button{padding:8px 18px;border-radius:999px;border-color:var(--hair);font-size:14px;color:var(--ink-2)}
+.menu button[aria-current="page"]{border-color:var(--ink);color:var(--ink);font-weight:600}
+main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:24px 20px 104px}
+.screen-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.screen-head p{margin-top:6px;max-width:52ch}
+
+/* Navegación inferior (móvil) */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(3,1fr);background:var(--paper);border-top:1px solid var(--hair);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs button{display:grid;justify-items:center;gap:3px;padding:9px 4px 8px;font-size:12px;color:var(--ink-3);border-radius:0}
+.tabs svg{width:24px;height:24px}
+.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
+.tabs button[aria-current="page"] svg{stroke-width:2.2}
+
+/* Pie de página (escritorio) */
+footer.foot{display:none;border-top:1px solid var(--hair);margin-top:auto}
+.foot-in{max-width:1120px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:14px;color:var(--ink-3)}
+.foot-in h3{font-size:14px;color:var(--ink);margin-bottom:6px}
+
+/* Cuadrículas de fotos */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tile{display:grid;gap:8px;align-content:start;min-width:0}
+.frame{position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;background:var(--surface);border:0;padding:0;width:100%}
+.frame img{width:100%;height:100%;object-fit:cover}
+.author{font-size:13px;color:var(--ink-3)}
+.tile h3{font-size:15px}
+.story{font-size:14px;color:var(--ink-3);overflow-wrap:anywhere}
+.tile-actions{display:flex;gap:14px}
+
+/* Mi galería */
+.banner{position:relative;height:150px;border-radius:14px;overflow:hidden;background:var(--surface)}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner .btn{position:absolute;right:10px;bottom:10px;background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.profile{display:flex;flex-wrap:wrap;gap:14px 16px;align-items:flex-start;margin:-42px 0 26px;padding:0 14px;position:relative}
+.avatar{width:84px;height:84px;border-radius:50%;background:var(--ink);color:var(--paper);border:4px solid var(--paper);display:grid;place-items:center;font:700 28px/1 var(--title);flex:none}
+.profile-main{flex:1;min-width:0;display:grid;gap:10px;margin-top:52px}
+.profile-actions{display:flex;gap:8px;flex-wrap:wrap;flex-basis:100%}
+.empty{grid-column:1/-1;padding:36px 20px;text-align:center;border:1.5px dashed var(--line);border-radius:14px;color:var(--ink-3)}
+.empty h3{color:var(--ink);margin-bottom:6px}
+
+/* Tutoriales */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{padding:8px 16px;border-radius:999px;border:1.5px solid var(--hair);background:none;font-size:14px;color:var(--ink-2)}
+.filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+.videos{display:grid;gap:22px}
+.video{display:grid;gap:10px;align-content:start}
+.thumb{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#1A1A1A;border:0;padding:0;width:100%}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;margin:auto;width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center}
+.play svg{width:22px;height:22px;margin-left:3px;fill:#1A1A1A}
+.dur{position:absolute;right:10px;bottom:10px;background:rgba(26,26,26,.82);color:#fff;font-size:12px;padding:3px 8px;border-radius:6px}
+.level{justify-self:start;font-size:13px;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+
+/* Diálogos */
+dialog{border:0;border-radius:16px;padding:0;width:min(92vw,480px);max-height:88vh;background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:var(--scrim)}
+.dlg{padding:22px;display:grid;gap:14px}
+.dlg-photo{border-radius:10px;overflow:hidden;background:var(--surface);max-height:52vh}
+.dlg-photo img{width:100%;max-height:52vh;object-fit:contain}
+.dlg label{display:grid;gap:6px;font-size:14px;font-weight:500}
+.dlg input,.dlg textarea{font:400 16px/1.4 var(--body);color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.dlg textarea{min-height:88px;resize:vertical}
+.dlg-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+.dlg-actions .btn{min-height:42px}
+.help dt{font:600 15px/1.3 var(--title);margin-top:10px}
+.help dd{margin:2px 0 0;color:var(--ink-3);font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:14px;z-index:20;opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.on{opacity:1}
+
+@media (min-width:820px){
+  h1{font-size:40px}
+  h2{font-size:24px}
+  .menu{display:flex}
+  .tabs,.only-mobile{display:none!important}
+  footer.foot{display:block}
+  main{padding:36px 20px 56px}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .videos{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+  .banner{height:220px}
+  .toast{bottom:32px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .screen{animation:in .28s ease-out}
+  @keyframes in{from{opacity:0}to{opacity:1}}
+  .frame img{transition:transform .35s ease}
+  .frame:hover img{transform:scale(1.03)}
+}
+</style>
+</head>
+<body>
+
+<!-- Pantalla: Login -->
+<section id="login">
+  <div class="login-box">
+    <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="16" width="52" height="38" rx="9"/><path d="M22 16l4-7h12l4 7"/><circle cx="32" cy="35" r="10"/></svg>
+    <h1>Fotografía para no fotógrafos</h1>
+    <p class="muted" style="font-size:16px">Aprende a tu ritmo y crea tu galería</p>
+    <button class="btn" id="btnLogin"><span class="g" aria-hidden="true">G</span>Iniciar sesión con Google</button>
+    <p class="muted" style="font-size:12px">Prototipo de demostración. El inicio de sesión es simulado.</p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="top-in">
+      <button class="brand" data-go="comunidad" aria-label="Ir a Comunidad">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="16" width="52" height="38" rx="9"/><path d="M22 16l4-7h12l4 7"/><circle cx="32" cy="35" r="10"/></svg>
+        <span>Fotografía para<br>no fotógrafos</span>
+      </button>
+      <nav class="menu" aria-label="Menú principal">
+        <button data-go="comunidad">Comunidad</button>
+        <button data-go="galeria">Mi galería</button>
+        <button data-go="tutoriales">Tutoriales</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Pantalla: Comunidad -->
+    <section class="screen" id="comunidad">
+      <div class="screen-head">
+        <div>
+          <h1>Comunidad</h1>
+          <p class="muted">Fotos de otros usuarios. Solo para mirar: aquí no hay “me gusta” ni comentarios.</p>
+        </div>
+      </div>
+      <div class="grid" id="gridComunidad"></div>
+    </section>
+
+    <!-- Pantalla: Mi galería -->
+    <section class="screen" id="galeria" hidden>
+      <div class="banner">
+        <img id="bannerImg" alt="Banner del perfil">
+        <button class="btn small" id="btnBanner">Cambiar banner</button>
+      </div>
+      <div class="profile">
+        <div class="avatar" id="avatar" aria-hidden="true">P</div>
+        <div class="profile-main">
+          <h2 id="userName">Pedro Ibarra</h2>
+        </div>
+          <div class="profile-actions">
+            <button class="btn ghost" id="btnPerfil">Editar perfil</button>
+            <button class="btn ghost" id="btnSalir">Cerrar sesión</button>
+            <button class="btn ghost only-mobile" id="btnAyuda">Ayuda y legal</button>
+          </div>
+      </div>
+      <div class="screen-head">
+        <div>
+          <h1>Mi galería</h1>
+          <p class="muted">Tus fotos y la historia detrás de cada una.</p>
+        </div>
+        <button class="btn" id="btnSubir">Subir foto</button>
+      </div>
+      <div class="grid" id="gridGaleria"></div>
+    </section>
+
+    <!-- Pantalla: Tutoriales -->
+    <section class="screen" id="tutoriales" hidden>
+      <div class="screen-head">
+        <div>
+          <h1>Tutoriales</h1>
+          <p class="muted">Videos cortos para aprender con el celular que ya tienes.</p>
+        </div>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrar por nivel">
+        <button data-nivel="Todos" aria-pressed="true">Todos</button>
+        <button data-nivel="Principiante" aria-pressed="false">Principiante</button>
+        <button data-nivel="Intermedio" aria-pressed="false">Intermedio</button>
+      </div>
+      <div class="videos" id="listaVideos"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-in">
+      <div><h3>Contacto</h3>hola@fotografiaparanofotografos.com</div>
+      <div><h3>Redes sociales</h3>Instagram, YouTube y Facebook</div>
+      <div><h3>Enlaces legales</h3>Términos de uso y política de privacidad<br><button class="link" data-reset>Restablecer la demostración</button></div>
+    </div>
+  </footer>
+
+  <nav class="tabs" aria-label="Navegación principal">
+    <button data-go="comunidad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/></svg>Comunidad</button>
+    <button data-go="galeria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="13.5" rx="3"/><path d="M8.5 6.5l1.4-2.5h4.2l1.4 2.5"/><circle cx="12" cy="13.2" r="3.6"/></svg>Mi galería</button>
+    <button data-go="tutoriales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="M10 9.2v5.6l4.8-2.8z"/></svg>Tutoriales</button>
+  </nav>
+</div>
+
+<!-- Diálogos -->
+<dialog id="dlgVer"><div class="dlg">
+  <div class="dlg-photo"><img id="verImg" alt=""></div>
+  <div><h2 id="verTitulo"></h2><p class="muted" id="verAutor"></p></div>
+  <div class="dlg-actions"><button class="btn ghost" data-close>Cerrar</button></div>
+</div></dialog>
+
+<dialog id="dlgFoto"><div class="dlg">
+  <h2 id="fotoTitulo">Subir foto</h2>
+  <div class="dlg-photo"><img id="fotoPrev" alt="Vista previa"></div>
+  <label>Título<input id="fotoNombre" maxlength="40" placeholder="Por ejemplo: Amanecer en el parque"></label>
+  <label>La historia detrás de la foto<textarea id="fotoHistoria" maxlength="220" placeholder="¿Dónde estabas? ¿Qué te llamó la atención?"></textarea></label>
+  <div class="dlg-actions"><button class="btn ghost" data-close>Cancelar</button><button class="btn" id="fotoGuardar">Publicar foto</button></div>
+</div></dialog>
+
+<dialog id="dlgEliminar"><div class="dlg">
+  <h2>Eliminar foto</h2>
+  <p class="muted">La foto y su historia se borran de tu galería. Esta acción no se puede deshacer.</p>
+  <div class="dlg-actions"><button class="btn ghost" data-close>Cancelar</button><button class="btn" id="eliminarOk">Eliminar foto</button></div>
+</div></dialog>
+
+<dialog id="dlgPerfil"><div class="dlg">
+  <h2>Editar perfil</h2>
+  <label>Nombre de usuario<input id="perfilNombre" maxlength="32"></label>
+  <div class="dlg-actions"><button class="btn ghost" data-close>Cancelar</button><button class="btn" id="perfilGuardar">Guardar cambios</button></div>
+</div></dialog>
+
+<dialog id="dlgAyuda"><div class="dlg">
+  <h2>Ayuda y legal</h2>
+  <dl class="help" style="margin:0">
+    <dt>Contacto</dt><dd>hola@fotografiaparanofotografos.com</dd>
+    <dt>Redes sociales</dt><dd>Instagram, YouTube y Facebook</dd>
+    <dt>Enlaces legales</dt><dd>Términos de uso y política de privacidad</dd>
+  </dl>
+  <div class="dlg-actions"><button class="link" data-reset style="margin-right:auto">Restablecer la demostración</button><button class="btn ghost" data-close>Cerrar</button></div>
+</div></dialog>
+
+<dialog id="dlgVideo"><div class="dlg">
+  <div class="thumb" style="cursor:default"><img id="videoImg" alt=""><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></div>
+  <div><h2 id="videoTitulo"></h2><p class="muted" id="videoDesc"></p></div>
+  <p class="muted">Video de demostración. En la plataforma publicada, aquí se reproduce el tutorial.</p>
+  <div class="dlg-actions"><button class="btn ghost" data-close>Cerrar</button></div>
+</div></dialog>
+
+<input type="file" id="archivo" accept="image/*" hidden>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  /* =====================================================================
+     CONFIGURACIÓN DE FOTOS
+     Las fotos se leen de la carpeta "fotos", que va junto a este archivo.
+     Solo hay que guardar cada foto con el nombre indicado (en minúsculas),
+     en formato .jpg, .jpeg, .png o .webp. Si un archivo no existe, esa
+     casilla simplemente no se muestra.
+     ===================================================================== */
+  var CARPETA="fotos/";
+
+  // Comunidad: fotos de OTROS usuarios. Archivos comunidad-1 a comunidad-8.
+  var COMUNIDAD=[
+    {archivo:"comunidad-1",autor:"Camilo R.", titulo:"Bancas en invierno"},
+    {archivo:"comunidad-2",autor:"Laura M.",  titulo:"La ciudad de noche"},
+    {archivo:"comunidad-3",autor:"Andrés P.", titulo:"Callejón"},
+    {archivo:"comunidad-4",autor:"Sofía G.",  titulo:"Rocas en la playa"},
+    {archivo:"comunidad-5",autor:"Daniela T.",titulo:""},
+    {archivo:"comunidad-6",autor:"Julián V.", titulo:""},
+    {archivo:"comunidad-7",autor:"Valentina C.",titulo:""},
+    {archivo:"comunidad-8",autor:"Mateo L.",  titulo:""}
+  ];
+
+  // Mi galería: TUS fotos. Archivos galeria-1 a galeria-4 y banner.
+  // El título y la historia también se pueden cambiar desde la página con "Editar".
+  var INICIAL={
+    nombre:"Pedro Ibarra",
+    fotos:[
+      {id:1,archivo:"galeria-1",titulo:"Noche de lluvia",historia:"Las luces de la calle se reflejaban en el piso mojado. Me agaché para que la rueda quedara en primer plano."},
+      {id:2,archivo:"galeria-2",titulo:"Boceto en sanguina",historia:"Le tomé la foto junto a la ventana, con luz natural, para que se notara la textura del papel."},
+      {id:3,archivo:"galeria-3",titulo:"Nueva foto",historia:"Usa “Editar” para contar la historia de esta foto."},
+      {id:4,archivo:"galeria-4",titulo:"Nueva foto",historia:"Usa “Editar” para contar la historia de esta foto."}
+    ]
+  };
+
+  // Tutoriales: miniaturas tutorial-1 a tutorial-6 (se muestran a color).
+  // Si falta una miniatura, la tarjeta queda con fondo oscuro y el botón de reproducir.
+  var VIDEOS=[
+    {archivo:"tutorial-1",t:"Sostén el celular sin que tiemble",d:"Tres formas de agarrar el teléfono para que tus fotos dejen de salir movidas.",n:"Principiante",m:"2:10"},
+    {archivo:"tutorial-2",t:"La regla de los tercios",d:"Activa la cuadrícula de la cámara y aprende dónde ubicar lo importante.",n:"Principiante",m:"2:45"},
+    {archivo:"tutorial-3",t:"Luz de ventana para retratos",d:"Cómo usar la luz natural de tu casa para que una persona se vea bien iluminada.",n:"Principiante",m:"3:20"},
+    {archivo:"tutorial-4",t:"Controla la exposición con un toque",d:"Aclara u oscurece la foto antes de tomarla, sin entrar a los ajustes.",n:"Intermedio",m:"3:05"},
+    {archivo:"tutorial-5",t:"Primer plano y fondo",d:"Usa objetos cercanos para darle profundidad a una escena cotidiana.",n:"Intermedio",m:"4:00"},
+    {archivo:"tutorial-6",t:"Edita sin exagerar",d:"Ajustes básicos de luz y color para mejorar una foto sin que parezca filtrada.",n:"Intermedio",m:"4:30"}
+  ];
+  /* ======================= FIN DE LA CONFIGURACIÓN ======================= */
+
+  // Si cambias la configuración, la demostración guardada se reinicia sola.
+  function huella(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0}return (h>>>0).toString(36)}
+  var KEY="fpnf-local-"+huella(JSON.stringify(INICIAL)), estado=leer();
+  function leer(){ try{var s=localStorage.getItem(KEY); if(s){var o=JSON.parse(s); if(o&&o.fotos) return o;}}catch(e){} return JSON.parse(JSON.stringify(INICIAL)); }
+  function guardar(){ try{localStorage.setItem(KEY,JSON.stringify(estado));}catch(e){} }
+
+  var $=function(id){return document.getElementById(id)};
+  function el(tag,cls,txt){var e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e;}
+  // Busca el archivo probando las extensiones permitidas.
+  var INCRUSTADAS=window.FOTOS_INCRUSTADAS||{};
+  function ponerFoto(im,base,listo,fallo){
+    var ext=["jpg","jpeg","png","webp"],i=0;
+    im.onload=function(){ if(listo)listo(); };
+    if(INCRUSTADAS[base]){ im.src=INCRUSTADAS[base]; return; }
+    im.onerror=function(){ i++; if(i<ext.length){im.src=CARPETA+base+"."+ext[i];} else {im.onerror=null; if(fallo)fallo();} };
+    im.src=CARPETA+base+"."+ext[0];
+  }
+  function aviso(t){var x=$("toast"); x.textContent=t; x.classList.add("on"); clearTimeout(aviso.k); aviso.k=setTimeout(function(){x.classList.remove("on")},2200);}
+
+  // Navegación
+  function ir(p){
+    ["comunidad","galeria","tutoriales"].forEach(function(s){$(s).hidden=(s!==p)});
+    document.querySelectorAll("[data-go]").forEach(function(b){ if(b.classList.contains("brand"))return; if(b.dataset.go===p)b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){ir(b.dataset.go)})});
+  $("btnLogin").addEventListener("click",function(){ $("login").hidden=true; $("app").hidden=false; ir("comunidad"); });
+  $("btnSalir").addEventListener("click",function(){ $("app").hidden=true; $("login").hidden=false; window.scrollTo(0,0); });
+  document.querySelectorAll("[data-close]").forEach(function(b){b.addEventListener("click",function(){b.closest("dialog").close()})});
+  document.querySelectorAll("dialog").forEach(function(d){d.addEventListener("click",function(e){if(e.target===d)d.close()})});
+  document.querySelectorAll("[data-reset]").forEach(function(b){b.addEventListener("click",function(){ estado=JSON.parse(JSON.stringify(INICIAL)); guardar(); pintarGaleria(); pintarPerfil(); var d=b.closest("dialog"); if(d)d.close(); aviso("Demostración restablecida"); })});
+
+  function ver(src,titulo,sub){ $("verImg").src=src; $("verImg").alt=titulo; $("verTitulo").textContent=titulo; $("verAutor").textContent=sub; $("dlgVer").showModal(); }
+
+  // Comunidad (solo lectura)
+  function pintarComunidad(){
+    var g=$("gridComunidad"); g.textContent="";
+    COMUNIDAD.forEach(function(f){
+      var titulo=f.titulo||("Foto de "+f.autor), sub=f.titulo?("Foto de "+f.autor):"Comunidad";
+      var t=el("div","tile"), b=el("button","frame"), im=el("img"); im.alt=titulo; t.hidden=true;
+      b.setAttribute("aria-label","Ver la foto de "+f.autor);
+      b.appendChild(im); b.addEventListener("click",function(){ver(im.currentSrc||im.src,titulo,sub)});
+      t.appendChild(b); t.appendChild(el("span","author",f.autor)); g.appendChild(t);
+      ponerFoto(im,f.archivo,function(){t.hidden=false},function(){t.remove()});
+    });
+  }
+
+  // Mi galería
+  function pintarPerfil(){
+    $("userName").textContent=estado.nombre; $("avatar").textContent=(estado.nombre.trim()[0]||"?").toUpperCase();
+    var b=$("bannerImg"); b.hidden=false;
+    if(estado.banner){ b.onerror=null; b.src=estado.banner; } else { ponerFoto(b,"banner",null,function(){b.hidden=true}); }
+  }
+  function vacia(g){ var v=el("div","empty"); v.appendChild(el("h3",null,"Tu galería está vacía")); v.appendChild(el("p",null,"Sube tu primera foto y cuenta la historia detrás de ella.")); g.appendChild(v); }
+  function pintarGaleria(){
+    var g=$("gridGaleria"); g.textContent="";
+    if(!estado.fotos.length){ vacia(g); return; }
+    estado.fotos.forEach(function(f){
+      var t=el("div","tile"), b=el("button","frame"), im=el("img"); im.alt=f.titulo; b.setAttribute("aria-label","Ver “"+f.titulo+"”");
+      b.appendChild(im); b.addEventListener("click",function(){ver(im.currentSrc||im.src,f.titulo,f.historia)});
+      var a=el("div","tile-actions"), e=el("button","link","Editar"), x=el("button","link","Eliminar");
+      e.addEventListener("click",function(){abrirFoto(f,im.currentSrc||im.src)}); x.addEventListener("click",function(){porEliminar=f.id; $("dlgEliminar").showModal();});
+      a.appendChild(e); a.appendChild(x);
+      t.appendChild(b); t.appendChild(el("h3",null,f.titulo)); t.appendChild(el("p","story",f.historia)); t.appendChild(a); g.appendChild(t);
+      if(f.src){ im.src=f.src; }
+      else { t.hidden=true; ponerFoto(im,f.archivo,function(){t.hidden=false},function(){
+        t.remove(); estado.fotos=estado.fotos.filter(function(o){return o.id!==f.id}); guardar(); if(!estado.fotos.length&&!g.children.length)vacia(g); }); }
+    });
+  }
+  var enEdicion=null, nuevaSrc=null, porEliminar=null, destino="foto";
+  function abrirFoto(f,src){
+    enEdicion=f||null;
+    $("fotoTitulo").textContent=f?"Editar descripción":"Subir foto";
+    $("fotoGuardar").textContent=f?"Guardar cambios":"Publicar foto";
+    $("fotoPrev").src=f?src:nuevaSrc; $("fotoNombre").value=f?f.titulo:""; $("fotoHistoria").value=f?f.historia:"";
+    $("dlgFoto").showModal();
+  }
+  $("fotoGuardar").addEventListener("click",function(){
+    var titulo=$("fotoNombre").value.trim()||"Sin título", historia=$("fotoHistoria").value.trim();
+    if(enEdicion){ enEdicion.titulo=titulo; enEdicion.historia=historia; aviso("Cambios guardados"); }
+    else { estado.fotos.unshift({id:Date.now(),src:nuevaSrc,titulo:titulo,historia:historia}); aviso("Foto publicada"); }
+    guardar(); pintarGaleria(); $("dlgFoto").close();
+  });
+  $("eliminarOk").addEventListener("click",function(){ estado.fotos=estado.fotos.filter(function(f){return f.id!==porEliminar}); guardar(); pintarGaleria(); $("dlgEliminar").close(); aviso("Foto eliminada"); });
+  $("btnSubir").addEventListener("click",function(){destino="foto"; $("archivo").click()});
+  $("btnBanner").addEventListener("click",function(){destino="banner"; $("archivo").click()});
+  $("archivo").addEventListener("change",function(){
+    var file=this.files&&this.files[0]; this.value=""; if(!file)return;
+    var r=new FileReader();
+    r.onload=function(){ var im=new Image(); im.onload=function(){
+      var max=1000, k=Math.min(1,max/Math.max(im.width,im.height)), c=document.createElement("canvas");
+      c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+      var data=c.toDataURL("image/jpeg",.82);
+      if(destino==="banner"){ estado.banner=data; guardar(); pintarPerfil(); aviso("Banner actualizado"); }
+      else { nuevaSrc=data; abrirFoto(null); }
+    }; im.onerror=function(){aviso("No se pudo leer la imagen. Prueba con un JPG o PNG.")}; im.src=r.result; };
+    r.readAsDataURL(file);
+  });
+  $("btnPerfil").addEventListener("click",function(){ $("perfilNombre").value=estado.nombre; $("dlgPerfil").showModal(); });
+  $("perfilGuardar").addEventListener("click",function(){ var n=$("perfilNombre").value.trim(); if(n){estado.nombre=n; guardar(); pintarPerfil(); aviso("Cambios guardados");} $("dlgPerfil").close(); });
+  $("btnAyuda").addEventListener("click",function(){ $("dlgAyuda").showModal(); });
+
+  // Tutoriales
+  function pintarVideos(nivel){
+    var l=$("listaVideos"); l.textContent="";
+    VIDEOS.filter(function(v){return nivel==="Todos"||v.n===nivel}).forEach(function(v){
+      var c=el("article","video"), b=el("button","thumb"), im=el("img"); im.alt=""; b.setAttribute("aria-label","Reproducir “"+v.t+"”");
+      b.appendChild(im); var p=el("span","play"); p.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>'; b.appendChild(p); b.appendChild(el("span","dur",v.m));
+      ponerFoto(im,v.archivo,null,function(){im.remove()});
+      b.addEventListener("click",function(){ var vi=$("videoImg"); if(im.isConnected){vi.hidden=false; vi.src=im.currentSrc||im.src;} else {vi.hidden=true;} $("videoTitulo").textContent=v.t; $("videoDesc").textContent=v.d; $("dlgVideo").showModal(); });
+      c.appendChild(b); c.appendChild(el("h2",null,v.t)); c.appendChild(el("p","muted",v.d)); c.appendChild(el("span","level","Nivel: "+v.n)); l.appendChild(c);
+    });
+  }
+  document.querySelectorAll(".filters button").forEach(function(b){b.addEventListener("click",function(){
+    document.querySelectorAll(".filters button").forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")}); pintarVideos(b.dataset.nivel);
+  })});
+
+  pintarComunidad(); pintarPerfil(); pintarGaleria(); pintarVideos("Todos");
+})();
+</script>
+</body>
+</html>
